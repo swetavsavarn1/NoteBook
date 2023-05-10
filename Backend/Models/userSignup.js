@@ -1,4 +1,7 @@
 const mongoose = require('mongoose')
+const { Schema } = require('mongoose')
+
+
 const signUPchema = new Schema({
     Name: {
         type: String
