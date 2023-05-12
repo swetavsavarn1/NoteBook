@@ -16,6 +16,10 @@ const notesSchema = new Schema({
     tag: {
         type: String,
         default: "General"
+    },
+    userId: {
+        type: String,
+        required: true
     }
 })
 
