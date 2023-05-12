@@ -9,9 +9,11 @@ const notesSchema = new Schema({
         type: String,
 
     },
-    dateCreated: {
+    createdOn: {
         type: String,
-        default: Date.now().toString()
+    },
+    modifiedOn: {
+        type: String
     },
     tag: {
         type: String,
