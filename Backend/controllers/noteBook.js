@@ -16,3 +16,8 @@ exports.editNotes = async (req, res) => {
     const updatedNotes = await notes.findOneAndUpdate({ _id: new ObjectId(req.params.id) }, { title, description, tag, modifiedOn:  Date.now().toString() }, { returnOriginal: true }).exec()
     res.status(200).json({ "data": updatedNotes })
 }
+exports.deleteNotes = async (req, res) => {
+    await notes.deleteOne({ _id: new ObjectId(req.params.id) })
+    res.status(200).json({ "message": "ok" })
+
+}
