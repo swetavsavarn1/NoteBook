@@ -1,31 +1,60 @@
-
-import '../App.css'
+import { useContext, useState, useEffect } from 'react';
+import axios from 'axios'
+import '../App.css';
+import { userContext } from '../App';
 function Home() {
+    const [content, setcontent] = useState("")
+    const [disableButton, setDisableButton] = useState(false)
+    const userToken = useContext(userContext)
+    const [alert, showAlert] = useState(false)
+    const [message, setmessage] = useState("")
+    useEffect(() => {
+        if (alert) {
+            const timer = setTimeout(() => {
+                showAlert(false);
+
+            }, 3000);
+
+            return () => clearTimeout(timer);
+        }
+    }, [alert]);
     return (
-        <div className="container">
-
-
-
-
-
-            <div class="bg text-center">
-
-
-                <div class="centered">
-
-                    <p class="firstLine"> A &nbsp; D &nbsp; D &nbsp; N &nbsp; O &nbsp; T &nbsp; E &nbsp; S </p>
-
-                    <p class="secondLine">CLICK BELOW TO ADD YOUR NOTES</p>
-
-                    <p> <input class="InputStyle"
-                        style={{ "font-family": "Arial" }} type="text" /> </p>
-                    <button type="button" class="btn btn-primary my-10">Submit</button>
+        <>
+            {alert && (<div class="alert alert-dark" role="alert">
+                {message}
+            </div>)}
+            <div className="container my-3">
+                <div className="paper">
+                    <div className="paper-content">
+                        <textarea autoFocus onChange={(e) => { setcontent(e.target.value); }} >{content}</textarea>
+                        <div className="text-right mx-3" >
+                            <button type="button" class="btn btn-dark" onClick={buttonHandeler} disabled={disableButton}>Done</button>
+                        </div>
+                    </div>
                 </div>
-
             </div>
+        </>
+    );
+    async function buttonHandeler() {
+        setDisableButton(true);
+        try {
+            const response = await axios.post(
+                `${process.env.REACT_APP_BE_BASE_URL}notebook/post`,
+                { key: userToken.userToken, note: content }
+            );
 
+            if (response.status === 200) {
+                setcontent("");
+                setmessage(response.data.message);
+            }
+        } catch (error) {
+            setmessage(error.response.data.message);
+            console.log("Error:", error);
+        }
 
-        </div>
-    )
+        showAlert(true);
+        setDisableButton(false);
+    }
 }
-export default Home
+
+export default Home;

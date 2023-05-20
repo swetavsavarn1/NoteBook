@@ -5,11 +5,22 @@ exports.allNotes = async (req, res) => {
     res.status(200).json({ "data": notesData })
 }
 exports.postNotes = async (req, res) => {
-    let { title, description = '', tag = '', createdOn =  Date.now().toString() } = req.body
-    const notesData = new notes({ title, description, tag, createdOn })
-    notesData.userId = req.user._id.toString()
-    await notesData.save()
-    res.status(200).json({ "message": "saved" })
+    try {
+        let { note = '', createdOn = Date.now().toString() } = req.body
+        if (note == '') {
+            res.status(400).json({ "message": "Cannot save empty note" })
+            return
+        }
+
+        const notesData = new notes({ note, createdOn })
+        notesData.userId = req.user._id.toString()
+        await notesData.save()
+        res.status(200).json({ "message": "Notes Saved. Thanks for using Notebook" })
+    } catch (error) {
+        console.log('Error from saving notes', error)
+        res.status(400).json({ "message": "Something Went Wrong" })
+
+    }
 }
 exports.editNotes = async (req, res) => {
     let { title, description = '', tag = '' } = req.body
