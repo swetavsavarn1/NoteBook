@@ -5,10 +5,11 @@ import Home from './Components/Home';
 import Aboutus from './Components/AboutUs';
 import Notes from './Components/Notes';
 import { createContext, useState } from 'react';
+import SignupLogin from './Components/signupLogin';
 export const userContext = createContext(null)
 function App() {
   const [userToken, setUserToken] = useState("")
-  const userContextValue = { userToken: "eyJhbGciOiJIUzI1NiJ9.NjQ1YmRjNjRjMmU3NDBkNjg0ZWNiNjhh.y-aPHDkV7t1hm9KVv4UVUwKvENAOvvp7drlcwaifESY", setUserToken };
+  const userContextValue = { userToken, setUserToken };
 
   return (
     <userContext.Provider value={userContextValue}>
@@ -17,6 +18,7 @@ function App() {
           <Route path='/home' element={<><Navbar title="NoteBook"></Navbar> <Home /></>} />
           <Route path='/about' element={<><Navbar title="NoteBook"></Navbar><Aboutus /></>} />
           <Route path='/your-notes' element={<><Navbar title="NoteBook"></Navbar><Notes /></>} />
+          <Route path='/' element={<SignupLogin />}></Route>
       </Routes>
     </BrowserRouter>
     </userContext.Provider>

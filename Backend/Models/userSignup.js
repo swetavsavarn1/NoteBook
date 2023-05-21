@@ -3,7 +3,7 @@ const { Schema } = require('mongoose')
 
 
 const signUPchema = new Schema({
-    Name: {
+    name: {
         type: String
     },
     email: {

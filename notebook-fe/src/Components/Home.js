@@ -38,7 +38,6 @@ function Home() {
                                 setcontent(e.target.value);
                             }}
                         >
-                            {content}
                         </textarea>
                         <div className="text-right mx-3">
                             <button
